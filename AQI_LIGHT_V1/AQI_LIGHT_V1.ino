@@ -1,10 +1,5 @@
-/*********
-  Rui Santos
-  Complete project details at http://randomnerdtutorials.com  
-*********/
 #include <SimpleTimer.h>  //https://playground.arduino.cc/Code/SimpleTimer/
 #include <ESP8266WiFi.h>
-#include <DNSServer.h>
 #include <ESP8266WebServer.h>
 #include <WiFiManager.h>         // https://github.com/tzapu/WiFiManager
 #include <ArduinoJson.h>
@@ -16,8 +11,6 @@
 #define bluePin D0
 
 SimpleTimer timer;
-// Set web server port number to 80
-WiFiServer server(80);
 
 String pm25="";
 int aqi=0;
@@ -96,6 +89,24 @@ void setColor(int red, int green, int blue)
   analogWrite(bluePin, blue);  
 }
 
+
+void testlight()
+{
+  setColor(255, 0, 0);  // 红色
+  delay(1000);
+  setColor(0, 255, 0);  // 绿色
+  delay(1000);
+  setColor(0, 0, 255);  // 蓝色
+  delay(1000);
+  setColor(255, 255, 0);  // 黄色
+  delay(1000);  
+  setColor(80, 0, 80);  // 紫色
+  delay(1000);
+  setColor(0, 255, 255);  // 浅绿色
+  delay(1000);
+}
+
+
 void setup() {
   Serial.begin(115200);
   
@@ -129,27 +140,10 @@ void setup() {
   // if you get here you have connected to the WiFi
   Serial.println("Connected.");
   
-  server.begin();
-
   testlight();
   GetAQI();
-  timer.setInterval(600000L,GetAQI);//10 minute
-}
-
-void testlight()
-{
-  setColor(255, 0, 0);  // 红色
-  delay(1000);
-  setColor(0, 255, 0);  // 绿色
-  delay(1000);
-  setColor(0, 0, 255);  // 蓝色
-  delay(1000);
-  setColor(255, 255, 0);  // 黄色
-  delay(1000);  
-  setColor(80, 0, 80);  // 紫色
-  delay(1000);
-  setColor(0, 255, 255);  // 浅绿色
-  delay(1000);
+  //timer.setInterval(600000L,GetAQI);//10 minute
+  timer.setInterval(60000L,GetAQI);//1 minute
 }
 
 void loop(){
