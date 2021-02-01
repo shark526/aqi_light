@@ -102,7 +102,7 @@ function loadMapByGeo(curGeo) {
 }
 
 function initMap() {
-    fetch(AQI_HERE_API)
+    fetch("http://api.waqi.info/feed/here/?token=" + token())
         .then((x) => x.json())
         .then((aqiData) => {
             if (aqiData.status != "ok") throw aqiData.data;
